@@ -1,0 +1,25 @@
+# created by /home/sberanger/Documents/gnucap-20160724/gnucap-20160724/lib/./configure. do not edit
+#------------------------------------------------------------------------
+CCFLAGS = -fPIC \
+-DHAVE_LIBREADLINE \
+-DUNIX -O3 -march=native -msse4.2 -msse4.1  -DNDEBUG -I. -I../include -I../../include -W
+LIBS = -ldl \
+-lreadline -ltermcap \
+
+PREFIX =  /usr/local
+
+#------------------------------------------------------------------------
+VPATH = .:..
+CCC = g++
+TARGET_EXT = .so
+
+LDFLAGS = -shared
+
+.SUFFIXES:
+.SUFFIXES: .o .cc
+.cc.o:; $(CCC) $(CXXFLAGS) $(CPPFLAGS) $(CCFLAGS) -c $<
+#------------------------------------------------------------------------
+$(TARGET)$(TARGET_EXT): $(TARGET_DEPENDS)
+	rm -f $@
+	$(CCC) $(CXXFLAGS) $(CPPFLAGS) $(CCFLAGS) $(OBJS) $(LIBS) $(LDFLAGS) -o $@
+#------------------------------------------------------------------------
