@@ -1,3 +1,9 @@
+
+This code is a fork of official gnucap with optimisation for at least SSE2 comptaible processor
+In m_matrix.h function subtract_dot_product use now a vector optimisation :dot_prod_sse
+
+There is also a specific make files isntruction for windows see install_windows
+
 Readme for development snapshot 2013-04-23
 
 This is a development snapshot.  As such, there may be problems due to
