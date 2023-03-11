@@ -1,0 +1,23 @@
+# created by /home/sberanger/Documents/gnucap-20160724/gnucap-20160724/main/./configure. do not edit
+#------------------------------------------------------------------------
+CCFLAGS = \
+-DUNIX -O3 -march=native -msse4.2 -msse4.1 -DNDEBUG -I. -I../include -I../../include -W
+LIBS = \
+-lgnucap \
+
+PREFIX =  /usr/local
+
+#------------------------------------------------------------------------
+VPATH = .:..
+CCC = g++
+TARGET_EXT =
+
+LDFLAGS = -rdynamic -L../../lib/O
+
+.SUFFIXES : .o .cc
+.cc.o:; $(CCC) $(CXXFLAGS) $(CPPFLAGS) $(CCFLAGS) -c $<
+#------------------------------------------------------------------------
+$(TARGET): $(OBJS)
+	rm -f $@
+	$(CCC) $(CXXFLAGS) $(CPPFLAGS) $(CCFLAGS) $(OBJS) -o $@ $(LIBS) $(LDFLAGS)
+#------------------------------------------------------------------------
