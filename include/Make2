@@ -1,0 +1,5 @@
+# created by /home/sberanger/Documents/gnucap-20160724/gnucap-20160724/include/./configure. do not edit
+#------------------------------------------------------------------------
+CCC = g++
+PREFIX =  /usr/local
+
