@@ -1,0 +1,60 @@
+0- install on linux :
+add stdio to test_readline  (nécessaire sur nouvelle lib):
+#include <stdio.h> 
+add /usr/local/lib/ on linux path
+export LD_LIBRARY_PATH=/usr/local/lib
+
+1- then:
+sudo ./configure
+sudo make
+sudo make install
+---------------------------------------------------------
+
+install on windows:
+0- installer mingw et ne pas oublier les dependances static
+ sudo yum install mingw32-winpthreads-static.noarch 
+
+0 - faire ces replace mingw586 plus maintenu passer en 686:
+replace i586-mingw32msvc-g++ par i686-mingw32msvc-g++ avec la commande :
+sudo find . -name "*Make*" -exec sed -i 's/i586-mingw32msvc-g++/i686-w64-mingw32-g++/g' {} \;
+sudo find . -name "*Make*" -exec sed -i 's/i586-mingw32msvc-dlltool/i686-w64-mingw32-dlltool/g' {} \;
+
+1- Modifier main/main.cc : 
+en entete ajouter en entete ajout
+#if defined(__MINGW32__)
+  #define ismingw 1
+#else
+  #define ismingw 0
+#endif
+
+et l67 baliser la commande avec un ismingw
+and line 67
+      if(ismingw == 0 ){
+	CMD::command(std::string("load " DEFAULT_PLUGINS), &CARD_LIST::card_list);
+      }
+2- Modifier main/Make2.mingw32  ("template dans my_make/main/Make2.mingw32 )
+replace main make by the one in ccamy_folder ("remplacement intelligent necessaire car depends des futurs evolution)
+on a notamment ajouter dans compil dans LDFLAGS = ../../apps/MSW/*.o  ../../lib/MSW/*.o -static-libgcc -static-libstdc++
+et supprimer la lib : LIBS = \
+et ajout -Ofast
+
+3- Modifier modelgen/Make2.mingw32  ("template dans my_make/modelgen/Make2.mingw32 )
+4- Modifier apps/Make2.mingw32  ("template dans my_make/modelgen/Make2.mingw32 )
+5- Modifier lib/Make2.mingw32  ("template dans my_make/modelgen/Make2.mingw32 )
+6- Dans le fichier Makefile (dossier root) inverser (cd main; ${MAKE} mingw) et (cd apps; ${MAKE} mingw) ("template dans my_make/Makefile )
+et ajout copie lib/O/libgucap.so vers lib/MSW/libgucap.so
+7. Dans le fichier modelgen/Makefile sous mingw  remplacer la ligne per	cat Make1 Make2 ../Make3 Make.depend >MSW/Makefile ("template dans my_make/modelgen/Makefile )
+9. Compiler pour linux si cen n'st pas fait (cf point 1. install linux)
+10.Compiler via mingw
+sudo make mingw
+
+
+
+notes :
+to really clean use twice
+sudo find . -type d -name "*O*" -exec rm -rf {} \;
+sudo find . -type d -name "*MSW*" -exec rm -rf {} \;
+
+
+notes2:
+global.o doit etre le dernier objet linker dans la compilation du main
